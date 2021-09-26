@@ -10,13 +10,16 @@
 
 (def schema-atom (atom nil))
 
+(defn load-schema []
+  (let [value @schema-atom]
+    (if-not value
+      (reset! schema-atom (json/read-value (:out (sh! "terraform" "providers" "schema" "-json"))
+                                           (json/object-mapper {:decode-key-fn true})))
+      value)))
+
 (defn init-namespaced-keywords []
   (let [;; Reading via encoding keys to keywords gives us keywords without namespace, which might be useful too
-        schema (let [value @schema-atom]
-                 (if-not value
-                   (reset! schema-atom (json/read-value (:out (sh! "terraform" "providers" "schema" "-json"))
-                                                        (json/object-mapper {:decode-key-fn true})))
-                   value))]
+        schema (load-schema)]
     (doseq [[_provider-schema-key provider-schema-value] (:provider_schemas schema)]
       (doseq [[resource-type resource-schema] (:resource_schemas provider-schema-value)]
         (let [block (:block resource-schema)
