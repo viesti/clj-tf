@@ -23,6 +23,7 @@
     (doseq [[_provider-schema-key provider-schema-value] (:provider_schemas schema)]
       (doseq [[resource-type resource-schema] (:resource_schemas provider-schema-value)]
         (let [block (:block resource-schema)
+              ;; TODO: Recursively walk blocks, perhaps make keywords like :aws_cloudfront_distribution-origin-custom_header/name, so split nested blocks with "-"
               block_types (:block_types block)
               attributes (:attributes block)]
           ;; Make keywords just to internalize resource/<block or attribute> keywords
