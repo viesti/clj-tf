@@ -28,6 +28,8 @@
           (doseq [[k _v] attributes]
             (keyword (name resource-type) (name k))))))))
 
-(defn write-json [iac filename]
+(defn write-json
+  "Writes the infrastructure data as JSON, with namespaces removed from keyword keys"
+  [iac filename]
   (spit filename (json/write-value-as-string iac (json/object-mapper {:encode-key-fn (fn [k]
                                                                                        (name k))}))))
