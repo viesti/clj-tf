@@ -1,0 +1,5 @@
+.clj-kondo/.cache
+.cpcache
+.terraform
+.terraform.lock.hcl
+.nrepl-port
