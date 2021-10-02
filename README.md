@@ -29,9 +29,17 @@ user=> (require '[clj-tf.core :as clj-tf])
 nil
 user=> (clj-tf/init-namespaced-keywords)
 nil
-user=> :aws_instance ;; <- Hit tab here
-:aws_instance          (k)   :aws_instance/arn      (k)   :aws_instance/id       (k)   :aws_instance/tags     (k)   :aws_instance/tenancy  (k)
-:aws_instance/ami      (k)   :aws_instance/host_id  (k)   :aws_instance/key_name (k)   :aws_instance/tags_all (k)   :aws_instances         (k)
+user=> :aws_instance ;; <- Hit tab
+:aws_instance         (k)   :aws_instance/filter  (k)   :aws_instance/tags    (k)   :aws_instances/ids    (k)
+:aws_instance/ami     (k)   :aws_instance/host_id (k)   :aws_instances        (k)
+:aws_instance/arn     (k)   :aws_instance/id      (k)   :aws_instances/id     (k)
+
+;; Nested blocks/attributes are separate by "." in the keyword namespace
+user=> :aws_instance.ca ;; <- Hit tab
+user=> :aws_instance.capacity_reservation_specification
+:aws_instance.capacity_reservation_specification.capacity_reservation_target/capacity_reservation_id (k)
+:aws_instance.capacity_reservation_specification/capacity_reservation_preference                     (k)
+:aws_instance.capacity_reservation_specification/capacity_reservation_target                         (k)
 
 ;; Then start writing resources
 user=> (def iac
@@ -39,7 +47,9 @@ user=> (def iac
   #_=>    {:aws_instance
   #_=>     {:worker
   #_=>      {:aws_instance/a  ;; Below are suggestions for namespaced keys that fit for :aws_instance
-:aws_instance/ami (k)   :aws_instance/arn (k)
+:aws_instance         (k)   :aws_instance/filter  (k)   :aws_instance/tags    (k)   :aws_instances/ids    (k)
+:aws_instance/ami     (k)   :aws_instance/host_id (k)   :aws_instances        (k)
+:aws_instance/arn     (k)   :aws_instance/id      (k)   :aws_instances/id     (k)
 
 ;; Make a complete resource data
 user=> (def iac
